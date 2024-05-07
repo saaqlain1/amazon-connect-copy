@@ -46,6 +46,11 @@ phases:
       - bin/connect_diff "$source_dir" "$target_dir" "$helper" "$source_lambda_prefix" "$target_lambda_prefix"
   build:
     commands:
+      - mkdir -p /usr/local/bin/sbt/bin
+      - chmod 755 /usr/local/bin/sbt/bin
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip &> /dev/null
+      - ./aws/install -b /usr/local/bin/sbt/bin
       - bin/connect_copy -d "$helper"
       - test $? -ne 0 && echo "No updates" || bin/connect_copy "$helper"
   post_build:
